@@ -14,7 +14,7 @@ reps = 0
 # ---------------------------- TIMER RESET ------------------------------- #
 def timer_reset():
     canvas.itemconfig(timer_text, text=WORK_MIN)
-    # window.after_cancel
+    window.after_cancel
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
     global reps
@@ -48,6 +48,8 @@ def count_down(count):  #2 function to produce a count down utilizing window.aft
         window.after(1000, count_down, count - 1)
     else:
         start_timer()
+        if reps % 2 == 0:
+            check_label.config(text="✔")
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Tomadoro")
@@ -65,7 +67,7 @@ start_button = Button(text="Start", command=start_timer)  # Use command kw to ca
 start_button.grid(column=0, row=2)
 reset_button = Button(text="Reset", command=timer_reset)
 reset_button.grid(column=2, row=2)
-check_label = Label(text="✔", bg=YELLOW, fg=GREEN)
+check_label = Label( bg=YELLOW, fg=GREEN)
 check_label.grid(column=1, row=3)
 
 
