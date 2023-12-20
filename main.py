@@ -6,15 +6,20 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 1
+WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 reps = 0
+timer = None
 
 # ---------------------------- TIMER RESET ------------------------------- #
 def timer_reset():
-    canvas.itemconfig(timer_text, text=WORK_MIN)
-    window.after_cancel
+    window.after_cancel(timer)
+    canvas.itemconfig(timer_text, text="00:00")
+    time_label.config(text="Timer")
+    check_label.config(text="")
+    global reps
+    reps = 0
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
     global reps
@@ -45,11 +50,15 @@ def count_down(count):  #2 function to produce a count down utilizing window.aft
 
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")  #3 This is how we call the variable to display count down in the GUI
     if count > 0:
-        window.after(1000, count_down, count - 1)
+        global timer
+        timer = window.after(1000, count_down, count - 1)
     else:
         start_timer()
-        if reps % 2 == 0:
-            check_label.config(text="✔")
+        marks = ""
+        work_sessions = math.floor(reps/2)
+        for _ in range(work_sessions):
+            marks += "✔"
+        check_label.config(text=marks)
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Tomadoro")
